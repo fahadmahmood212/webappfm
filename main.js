@@ -4,7 +4,7 @@ const app = Vue.createApp({
             product: 'Book a Lesson',
             subject: 'History',
             location: 'Bristol',
-            price: '£20.00',
+            price: '£15.00',
             spaces: 5
         }
     },
