@@ -2,7 +2,7 @@ const app = Vue.createApp({
     data() {
         return {
             product: 'Book a Lesson',
-            subject: 'Science',
+            subject: 'History',
             location: 'London',
             price: '£20.00',
             spaces: 5
