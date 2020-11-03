@@ -1,6 +1,7 @@
 const app = Vue.createApp({
     data() {
-        return {
+        return { 
+            //initialising the variables
             product: 'Book a Lesson',
             subject: 'History',
             location: 'Bristol',
@@ -9,6 +10,7 @@ const app = Vue.createApp({
         }
     },
     methods: { 
+        //updating the button chart variable
         addToCart() {
             if (this.spaces > 0) { 
             this.spaces-=1

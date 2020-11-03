@@ -2,24 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Website title</title>
+    <title>After School Lessons</title>
     <!-- Import Vue.js -->
     <script src="https://unpkg.com/vue@3.0.0-beta.12/dist/vue.global.js"></script>
   </head>
-  <body>
-    <div id="app">
+  <body> 
+    <!--Creating the app objects-->
+    <div id="app"> 
       <h1>{{ product}}</h1>
       <p>Subject: {{ subject}}</p>
       <p>Location: {{ location}} </p>
       <p>Price: {{ price}}</p>
       <p>Spaces: {{ spaces}}</p>
+      <!--Creating button-->
       <button class="button" v-on:click="addToCart">Add to Cart</button>
     </div>
 
-    <!-- Import App -->
+    <!-- Importing app-->
     <script src="./main.js"></script>
 
-    <!-- Mount App -->
+    <!-- Mounting app-->
     <script>
       const mountedApp = app.mount('#app')
     </script>
