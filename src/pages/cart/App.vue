@@ -14,10 +14,10 @@
     <span>Sort by order: {{ inputSortingOrder }}</span>
     <br>
     <input type="radio" id="one" value="ASC" v-model="inputSortingOrder" >
-    <label for="one">Ascending</label>
+    <label for="one">ascending/a to z</label>
     <br>
     <input type="radio" id="two" value="DESC" v-model="inputSortingOrder" >
-    <label for="two">Descending</label>
+    <label for="two">descending /z to a</label>
     <br>
     <!-- This is for displaying the lessons-->
     <div v-for="lesson in sortedLessons" :key="lesson.id" v-bind:class="changeSortByOrder"> 
@@ -64,22 +64,28 @@ export default {
           return this.sortedByPrice();
         case "places":
           return this.sortedByPlacesAvailable();
+        default:
+          return this.lessons;
       }
-      return this.lessons;
     }
   },
   methods:{ 
     // update the lesson details after adding to chart
-    addtochart (button, lessontoadd) {
-      if(lessontoadd.places>0)
-      { 
-        let id = lessontoadd.id;   
-        this.lessons[id].places -= 1;
-      }
-      if(lessontoadd.places === 0)
+    addtochart (button, lessontoadd) { 
+       if (lessontoadd.places > 0)
       {
-        button.style.visibility = "hidden";
+        let id = lessontoadd.id;
+        var arrayLength = this.lessons.length;
+        for (var i = 0; i < arrayLength; i++) {
+            if (this.lessons[i].id == id)
+            {
+              this.lessons[i].places -= 1;
+             
+              break;
+            }
+        }
       }
+
     },
     // check if add to chart button should be disabled 
      isDisabled(lesson) {
@@ -106,15 +112,35 @@ export default {
     },
     // sort lessons array by subject 
      sortedByLocation: function(){
-      function compare(a, b) {
+       // this is for sorting in descending order
+      function descending(a, b) {
+        if (a.location > b.location)
+          return -1;
+        if (a.location < b.location)
+          return 1;
+        return 0;
+      }
+      // this is for sorting in ascending order
+      function ascending(a, b) {
         if (a.location < b.location)
           return -1;
         if (a.location > b.location)
           return 1;
         return 0;
       }
-      let sortedArray = this.lessons;
-      return sortedArray.sort(compare);
+      if ( this.defaultSortingOrder == "ASC" )
+      {
+        let sortedArray = this.lessons;
+        sortedArray.sort(ascending);
+        return sortedArray;
+      }
+      else if (this.defaultSortingOrder == "DESC")
+      {
+        let sortedArray = this.lessons;
+        sortedArray.sort(descending);
+        return sortedArray;
+      }
+
     },
     // sort lessons array by subject 
      sortedByPrice: function(){
