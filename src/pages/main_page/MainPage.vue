@@ -1,6 +1,7 @@
 <template>
 <!-- this is for the html part of the code-->
   <div id="app"> 
+    <button><router-link :to="{name: 'Cart'}"> cart </router-link></button>
     <!-- this is for the select button for different sorting categories-->
     <select v-model="sortBy">
       <option disabled value="">Sort by</option>
@@ -44,6 +45,7 @@ export default {
       sortBy: "",
       inputSortingOrder: "ASC", //this is the order selected by the user
       defaultSortingOrder: "ASC", //this is the current order being used 
+      shoppingcart: [], //this array stores the lessons added to cart
     }
   },
   computed:{ 
@@ -75,15 +77,30 @@ export default {
        if (lessontoadd.places > 0)
       {
         let id = lessontoadd.id;
+        //look for the lesson in the array
         var arrayLength = this.lessons.length;
         for (var i = 0; i < arrayLength; i++) {
             if (this.lessons[i].id == id)
             {
+              //subtract one place from lesson
               this.lessons[i].places -= 1;
-             
+              //add this lesson to the shopping cart
+              this.shoppingcart.push(
+                {
+                  id: lessontoadd.id, 
+                  subject: lessontoadd.subject,
+                  location: lessontoadd.location,
+                  price: lessontoadd.price,
+                  places: lessontoadd.places,
+                }
+              )
               break;
             }
         }
+        //this saves the lesson added in the browser
+        const parsed = JSON.stringify(this.shoppingcart);
+        localStorage.setItem('shoppingcart', parsed);
+
       }
 
     },
@@ -100,15 +117,34 @@ export default {
     },
     // sort lessons array by subject 
     sortedBySubject: function () {
-      function compare(a, b) {
+      // this is for sorting in descending order
+      function descending(a, b) {
+        if (a.subject > b.subject)
+          return -1;
+        if (a.subject < b.subject)
+          return 1;
+        return 0;
+      }
+      // this is for sorting in ascending order
+      function ascending(a, b) {
         if (a.subject < b.subject)
           return -1;
         if (a.subject > b.subject)
           return 1;
         return 0;
       }
-      let sortedArray = this.lessons;
-      return sortedArray.sort(compare);
+      if ( this.defaultSortingOrder == "ASC" )
+      {
+        let sortedArray = this.lessons;
+        sortedArray.sort(ascending);
+        return sortedArray;
+      }
+      else if (this.defaultSortingOrder == "DESC")
+      {
+        let sortedArray = this.lessons;
+        sortedArray.sort(descending);
+        return sortedArray;
+      }
     },
     // sort lessons array by subject 
      sortedByLocation: function(){
@@ -144,27 +180,65 @@ export default {
     },
     // sort lessons array by subject 
      sortedByPrice: function(){
-      function compare(a, b) {
-        if (a.price< b.price)
+       // this is for sorting in descending order
+      function descending(a, b) {
+        if (a.price > b.price)
           return -1;
-        if (a.price> b.price)
+        if (a.price < b.price)
           return 1;
         return 0;
       }
-      let sortedArray = this.lessons;
-      return sortedArray.sort(compare);
+      // this is for sorting in ascending order
+      function ascending(a, b) {
+        if (a.price < b.price)
+          return -1;
+        if (a.price > b.price)
+          return 1;
+        return 0;
+      }
+      if ( this.defaultSortingOrder == "ASC" )
+      {
+        let sortedArray = this.lessons;
+        sortedArray.sort(ascending);
+        return sortedArray;
+      }
+      else if (this.defaultSortingOrder == "DESC")
+      {
+        let sortedArray = this.lessons;
+        sortedArray.sort(descending);
+        return sortedArray;
+      }
     }, 
     // sort lessons array by subject 
      sortedByPlacesAvailable: function(){
-      function compare(a, b) {
+        // this is for sorting in descending order
+      function descending(a, b) {
+        if (a.places > b.places)
+          return -1;
+        if (a.places < b.places)
+          return 1;
+        return 0;
+      }
+      // this is for sorting in ascending order
+      function ascending(a, b) {
         if (a.places < b.places)
           return -1;
         if (a.places > b.places)
           return 1;
         return 0;
       }
-      let sortedArray = this.lessons;
-      return sortedArray.sort(compare);
+      if ( this.defaultSortingOrder == "ASC" )
+      {
+        let sortedArray = this.lessons;
+        sortedArray.sort(ascending);
+        return sortedArray;
+      }
+      else if (this.defaultSortingOrder == "DESC")
+      {
+        let sortedArray = this.lessons;
+        sortedArray.sort(descending);
+        return sortedArray;
+      }
     },
   }
 }
